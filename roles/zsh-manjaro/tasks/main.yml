@@ -1,0 +1,49 @@
+
+- name: Ensure global zshrc.d directory exists
+  ansible.builtin.file:
+    path: "/etc/zsh/zshrc.d"
+    state: directory
+
+- name: Copy all global zshrc.d files
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/etc/zsh/zshrc.d/{{ item | basename }}"
+    owner: root
+    group: root
+  with_fileglob: "../templates/zshrc.d/*.zshrc"
+
+- name: Configure global zshrc
+  ansible.builtin.template:
+    src: zshrc
+    dest: "/etc/zsh/zshrc"
+    owner: root
+    group: root
+
+- name: Configure root .zshrc
+  ansible.builtin.template:
+    src: root-zshrc
+    dest: "/root/.config/zsh/.zshrc"
+    owner: root
+    group: root
+
+- name: powerlevel10k config override
+  ansible.builtin.template:
+    src: p10k.zsh
+    dest: "/etc/zsh/p10k.zsh"
+    owner: root
+    group: root
+
+
+- name: powerlevel10k config override symlink (root)
+  ansible.builtin.file:
+    src: "/etc/zsh/p10k.zsh"
+    dest: /root/.config/zsh/.p10k.zsh
+    state: link
+
+- name: powerlevel10k config override symlink (user)
+  ansible.builtin.file:
+    src: "/etc/zsh/p10k.zsh"
+    dest: /home/{{ system_user.name }}/.p10k.zsh
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+    state: link

@@ -1,0 +1,2 @@
+
+for file in /etc/zsh/zshrc.d/*; do source $file; done

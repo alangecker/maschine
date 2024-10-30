@@ -1,7 +1,13 @@
 ---
 - import_tasks: users.yml
 - import_tasks: packages.yml
-- import_tasks: zsh.yml
+
+- when: not ansible_lsb.description is search("Manjaro")
+  import_tasks: zsh.yml
+- when: ansible_lsb.description is search("Manjaro")
+  ansible.builtin.import_role:
+    name: zsh-manjaro
+
 - import_tasks: ssh-agent.yml
 - import_tasks: network-manager.yml
 - import_tasks: bluetooth.yml
