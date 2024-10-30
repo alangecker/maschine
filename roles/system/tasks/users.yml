@@ -33,6 +33,7 @@
       - audio
       - video
       - uucp
+    append: true
     shell: /bin/zsh
     password: "{{ user_password | password_hash('sha512') }}"
     update_password: on_create
