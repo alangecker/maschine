@@ -3,7 +3,7 @@
 - name: add admin groups
   ansible.builtin.group:
     name: "{{ system_user.name }}"
-    gid: "{{ system_user.id }}"
+    gid: "{{ system_user.gid | default(system_user.id) }}"
 
 - name: add sudo group
   ansible.builtin.group:
