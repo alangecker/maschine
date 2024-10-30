@@ -13,7 +13,7 @@
     state: present
 
 - name: Install AUR addon packages
-  aur:
-    name: "{{ plasma_aur.packages }}"
-    user: "{{ user_name }}"
-    dir: "/home/{{ user_name }}/{{ plasma_aur.dir }}"
+  kewlfft.aur.aur:
+    name: "{{ plasma_aur_packages }}"
+  become: yes
+  become_user: aur_builder

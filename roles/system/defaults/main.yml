@@ -106,14 +106,12 @@ system_development_packages:
   - deno
   - jq
 
-system_aur:
-  dir: "{{ aur_dir }}"
-  packages:
-    - yay
-    - rbenv
-    - ruby-build
-    - code-marketplace
-    - code-features
+system_aur_packages:
+  - yay
+  - rbenv
+  - ruby-build
+  - code-marketplace
+  - code-features
 
 # apps not installed via flatpak
 system_applications:

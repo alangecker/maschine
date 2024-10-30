@@ -6,9 +6,7 @@
     mode: '0644'
 
 - name: Install junction via aur
-  aur:
-    name: "junction"
-    user: "{{ system_user.name }}"
-    dir: "/home/{{ system_user.name }}/{{ system_aur.dir }}"
-  tags:
-    - aur
+  kewlfft.aur.aur:
+    name: junction
+  become: yes
+  become_user: aur_builder

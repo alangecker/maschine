@@ -7,9 +7,9 @@ It's supposed to be used after the [Arch Installation Guide](INSTALL.md) is comp
 
 ## Running
 
-After installing `ansible`, install and update the submodules:
+After installing `ansible`, install the ansible galaxy collections:
 
-    $ git submodule init && git submodule update
+    $ ansible-galaxy collection install -r requirements.yml
 
 Override any variables you might want to change in `group_vars/all/local.yml`, e.g. `system_platform: intel`.
 

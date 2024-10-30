@@ -30,7 +30,5 @@ kde_applications:
   - okular
   - spectacle
 
-plasma_aur:
-  dir: "{{ aur_dir }}"
-  packages:
-    - kf6-servicemenus-reimage
+plasma_aur_packages:
+  - kf6-servicemenus-reimage

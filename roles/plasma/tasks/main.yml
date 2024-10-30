@@ -1,4 +1,5 @@
 ---
 - import_tasks: packages.yml
 - import_tasks: greetd.yml
+  when: "'greetd' in plasma_aur_packages"
 - import_tasks: config.yml

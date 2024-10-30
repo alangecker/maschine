@@ -97,20 +97,25 @@
     enabled: yes
 
 # AUR
-- name: Create AUR directory
-  ansible.builtin.file:
-    path: "/home/{{ system_user.name }}/{{ system_aur.dir }}"
-    state: directory
-    owner: "{{ system_user.name }}"
-    group: "{{ system_user.name }}"
-  tags:
-    - aur
+- name: Create the `aur_builder` user
+  ansible.builtin.user:
+    name: aur_builder
+    create_home: yes
+    group: wheel
+
+- name: Allow the `aur_builder` user to run `sudo pacman` without a password
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/11-install-aur_builder
+    line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+    create: yes
+    mode: 0644
+    validate: 'visudo -cf %s'
 
 - name: Install AUR packages
-  aur:
-    name: "{{ system_aur.packages }}"
-    user: "{{ system_user.name }}"
-    dir: "/home/{{ system_user.name }}/{{ system_aur.dir }}"
+  kewlfft.aur.aur:
+    name: "{{ system_aur_packages }}"
+  become: yes
+  become_user: aur_builder
   tags:
     - aur
 

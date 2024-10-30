@@ -67,19 +67,11 @@
   shell: sbctl verify | sed 's/✗ /sbctl sign -s /e'
 
 # Install kernel-install-mkinitcpio
-- name: Create AUR directory
-  ansible.builtin.file:
-    path: "/home/{{ system_user.name }}/{{ system_aur.dir }}"
-    state: directory
-    owner: "{{ system_user.name }}"
-    group: "{{ system_user.name }}"
-
 - name: Install kernel-install-mkinitcpio
-  aur:
-    name: "kernel-install-mkinitcpio"
-    user: "{{ system_user.name }}"
-    dir: "/home/{{ system_user.name }}/{{ system_aur.dir }}"
-
+  kewlfft.aur.aur:
+    name: kernel-install-mkinitcpio
+  become: yes
+  become_user: aur_builder
 
 - name: reinstall-kernels and create loading entry
   shell: reinstall-kernels
