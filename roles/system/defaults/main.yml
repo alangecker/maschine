@@ -134,3 +134,5 @@ system_applications:
   - vlc
   - skanlite
   - kdenlive
+
+bluetooth_enabled: true
