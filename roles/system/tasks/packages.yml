@@ -75,11 +75,13 @@
 
 # Mirrorlist updates via reflector
 - name: copy reflector config file
+  when: "'reflector' in system_base_packages"
   ansible.builtin.template:
     src: "reflector/reflector.conf.j2"
     dest: "/etc/xdg/reflector/reflector.conf"
 
 - name: Enable reflector service for mirrorlist updates on boot
+  when: "'reflector' in system_base_packages"
   ansible.builtin.service:
     name: reflector.timer
     state: started
