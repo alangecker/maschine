@@ -1,0 +1,12 @@
+---
+- name: Provision typewriter
+  hosts: remote
+  become: true
+  roles:
+    - role: secureboot
+      tags:
+        - setup
+        - secureboot
+      system_user:
+        name: "{{ user_name }}"
+

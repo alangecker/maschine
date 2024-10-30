@@ -1,0 +1,88 @@
+
+
+
+- shell: "bootctl -p"
+  register: efi_partition
+
+# change efi partition mounting point to /efi
+- when: efi_partition.stdout != '/efi'
+  block:
+  - ansible.builtin.file:
+      path: /efi
+      state: directory
+  - ansible.builtin.replace:
+      path: /etc/fstab
+      regexp: "\\s{{ efi_partition.stdout }}\\s"
+      replace: ' /efi '
+  - ansible.posix.mount:
+      path: "{{ efi_partition.stdout }}"
+      state: unmounted
+  - shell: 'systemctl daemon-reload && mount -a'
+
+
+- name: remove grub
+  community.general.pacman:
+    name:
+      - grub
+      - grub-btrfs
+      - update-grub
+    state: absent
+
+- name: install packages
+  community.general.pacman:
+    name:
+    - efitools
+    - sbctl
+
+
+- name: install systemd-boot
+  shell: bootctl install
+
+
+- name: remove keyfile from /etc/mkinitcpio.conf
+  ansible.builtin.replace:
+    path: /etc/mkinitcpio.conf
+    regexp: '/crypto_keyfile\.bin'
+    replace: ''
+
+
+
+- shell: "sbctl status --json"
+  register: sb_status_raw
+- set_fact:
+    sb_status: "{{ sb_status_raw.stdout|from_json }}"
+
+- when: not sb_status.installed and not sb_status.setup_mode
+  ansible.builtin.fail:
+      msg: secure boot needs to be in setup mode to continue
+
+
+- name: setup mode? enroll secure boot keys
+  when: sb_status.setup_mode
+  block:
+    - shell: sbctl create-keys
+    - shell: sbctl enroll-keys -m
+
+- name: ensure everything is signed
+  shell: sbctl verify | sed 's/✗ /sbctl sign -s /e'
+
+# Install kernel-install-mkinitcpio
+- name: Create AUR directory
+  ansible.builtin.file:
+    path: "/home/{{ system_user.name }}/{{ system_aur.dir }}"
+    state: directory
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+
+- name: Install kernel-install-mkinitcpio
+  aur:
+    name: "kernel-install-mkinitcpio"
+    user: "{{ system_user.name }}"
+    dir: "/home/{{ system_user.name }}/{{ system_aur.dir }}"
+
+
+- name: reinstall-kernels and create loading entry
+  shell: reinstall-kernels
+
+
+
