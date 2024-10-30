@@ -41,7 +41,7 @@
 
 - name: install intel drivers
   community.general.pacman:
-    name: "{{ system_amd_packages }}"
+    name: "{{ system_intel_packages }}"
     update_cache: yes
     state: present
   when: system_platform == "intel"
