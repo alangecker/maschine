@@ -1,10 +1,19 @@
 ---
 # enable multilib for 32bit apps
+- name: Check whether /etc/pacman.conf already contains a multilib configuration
+  command: grep -xqE "^\[multilib\]" /etc/pacman.conf
+  register: multilib_enabled
+  check_mode: no
+  ignore_errors: yes
+  changed_when: no
+
 - name: Enable multilib repository
+  when: multilib_enabled.rc != 0
   ansible.builtin.blockinfile:
     path: /etc/pacman.conf
     block: |
       [multilib]
+      SigLevel = PackageRequired
       Include = /etc/pacman.d/mirrorlist
 
 # install base packages
