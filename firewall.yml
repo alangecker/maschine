@@ -49,3 +49,9 @@
           filename: "dhcpv6_client_accept"
           dport: [546]
           protocol: "udp"
+        - type: "dport_accept"
+          filename: "local_ssh_accept"
+          dport: [22]
+          saddr:
+            - "192.168.0.0/16"
+            - "10.88.0.0/16"
