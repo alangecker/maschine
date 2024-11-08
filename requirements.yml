@@ -1,2 +1,4 @@
 collections:
   - name: kewlfft.aur
+roles:
+ - name: borgbase.ansible_role_borgbackup

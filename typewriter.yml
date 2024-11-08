@@ -120,6 +120,62 @@
       - yay
       - chirp-next
       - vscodium-bin
+
+    borg_encryption_passphrase: !vault |
+        $ANSIBLE_VAULT;1.1;AES256
+        64633765616333663732323034363165623831613637656362336632343861306432656165646162
+        3030383835353330656566653636383037323665663035640a373836353162306561346437366232
+        38376331316435316166386535343938313433323330323865363064306330346332613639353563
+        6331336339616466350a616334613338323961616437396165633737663966623837643962316131
+        32346132386665653935653032653535306366306238646665633063343130376366623239346361
+        6234633866643736623630656435363164303137663330313962
+    borg_repository: !vault |
+        $ANSIBLE_VAULT;1.1;AES256
+        61356664633237353333643839353639336661336332303439373439646432363466373737663661
+        6637396330623635613138386539316230386538646335620a666439333934393765356638663533
+        30316663323865396638646466656264373766663930373030666333363762316263316533373361
+        6162323862393135370a613363383337343635636636303238336130636139636164663931646263
+        33303830313930653465336633643262623864376564646364366162643865303530313165326130
+        62356465623363353661643432646239326139376632383534353138666663376266613831303530
+        346664353065343065663066653465323566
+    borg_source_directories:
+      - /etc
+      - /home/user
+      - /home/user/.electrum
+      - /home/server-unlock
+      - /development
+
+    borg_exclude_patterns:
+      - '*.pyc'
+      - cache
+      - .cache
+      - /**/Cache
+      - '*/.vim*.tmp'
+      - /*/**/node_modules
+      - /**/.cache
+      - /**/cache
+        #- /**/
+      - venv
+      - env
+      - node_modules
+      - /home/**/.npm
+      - /home/**/.wine
+      - /home/**/.cargo
+      - /home/**/.ansible
+      - /home/**/.clang-tools
+      - /home/**/Android
+      - /home/**/.wineprefixes
+      - /home/**/.vagrant.d
+      - /home/**/.gradle
+      - /home/**/.rustup
+      - /home/user/Downloads
+      - /home/user/Videos
+      - /home/user/.PlayOnLinux
+      - /home/user/cloud/
+      - /home/user/tmp
+      - .cargo
+      - /development/tmp
+
   roles:
     - role: system
       tags:
@@ -138,3 +194,9 @@
     - role: jails
       tags:
         - jails
+
+    - role: borgbase.ansible_role_borgbackup
+      borgmatic_timer: "" # disable cronjob / only manual backups
+      tags:
+        - backup
+      when: backup_enabled
