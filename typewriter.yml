@@ -7,6 +7,6 @@
       tags:
         - setup
         - secureboot
-      system_user:
-        name: "{{ user_name }}"
-
+    - role: jails
+      tags:
+        - jails

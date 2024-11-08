@@ -1,0 +1,43 @@
+
+- import_tasks: orjail.yml
+
+- name: ensure jail directories exist
+  ansible.builtin.file:
+    path: /home/{{ system_user.name }}/{{ item }}
+    state: directory
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+  with_items:
+    - jails
+    - jails/dev
+    - jails/tor
+    - jails/daw
+    - .config/firejail
+
+- name: ensure firejail is installed
+  community.general.pacman:
+    name: firejail
+
+- name: aliases to enter jails
+  ansible.builtin.template:
+    src: "jails.zshrc"
+    dest: "/etc/zsh/zshrc.d/jails.zshrc"
+
+- name: Copy all firejail configs
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/home/{{ system_user.name }}/.config/firejail/{{ item | basename }}"
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+  with_fileglob: "../templates/firejail/*"
+
+- name: powerlevel10k config symlinks in jails
+  ansible.builtin.file:
+    src: "/etc/zsh/p10k.zsh"
+    dest: /home/{{ system_user.name }}/jails/{{ item }}/.p10k.zsh
+    state: link
+  with_items:
+    - dev
+    - tor
+    - daw
+

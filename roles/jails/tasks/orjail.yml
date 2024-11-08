@@ -1,0 +1,43 @@
+- name: ensure tor is installed
+  community.general.pacman:
+    name: tor
+
+- name: orjail torrc
+  ansible.builtin.template:
+    src: orjail-torrc
+    dest: "/etc/tor/torrc.orjail{{ item }}"
+  vars:
+    index: "{{ item }}"
+  with_items:
+    - 1
+    - 2
+
+- name: orjail systemd service
+  ansible.builtin.template:
+    src: tor-orjail.service
+    dest: "/etc/systemd/system/tor-orjail{{ item }}.service"
+  vars:
+    index: "{{ item }}"
+  with_items:
+    - 1
+    - 2
+
+- name: orjail-ensure-netns script
+  ansible.builtin.template:
+    src: orjail-ensure-netns
+    dest: "/usr/local/bin/orjail-ensure-netns"
+    mode: '0755'
+
+- name: ensure orjail tor directory exist
+  ansible.builtin.file:
+    path: /var/lib/orjail
+    state: directory
+    owner: tor
+    group: tor
+
+- name: allow user to start orjail1 without sudo password
+  community.general.sudoers:
+    name: allow-systemd-orjail1
+    state: present
+    user: "{{ system_user.name }} "
+    commands: /bin/systemctl start tor-orjail1.service

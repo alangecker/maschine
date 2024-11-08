@@ -1,0 +1,7 @@
+DataDirectory /var/lib/orjail/orjail{{ index }}
+AutomapHostsSuffixes .onion,.exit
+AutomapHostsOnResolve 1
+VirtualAddrNetworkIPv4 10.200.{{ index }}.1/16
+TransPort 10.200.{{ index }}.2:{{ 9040+index }}
+DNSPort 10.200.{{ index }}.2:{{ 5350+index }}
+SOCKSPort 0
