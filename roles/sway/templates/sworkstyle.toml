@@ -1,0 +1,19 @@
+
+[matching]
+'org.keepassxc.KeePassXC' = '󰷖'
+'org.telegram.desktop' = ''
+nemo = '󰉖'
+chromium = ''
+Chromium = ''
+'im.riot.Riot' = '󰭹'
+'org.signal.Signal' = '󰭹'
+'org.mozilla.firefox' = ''
+'org.mozilla.Thunderbird' = ''
+'org.kde.merkuro.calendar' = ''
+'Tor Browser' = ''
+libreoffice-writer = ''
+libreoffice-calc = '󰱿'
+vlc = '󰕼'
+footclient = ''
+
+kicad = ''

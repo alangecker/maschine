@@ -191,6 +191,11 @@
       tags:
         - setup
         - secureboot
+
+    - role: sway
+      tags:
+        - window-manager
+
     - role: jails
       tags:
         - jails

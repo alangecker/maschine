@@ -1,0 +1,8 @@
+profile laptop_only {
+    output eDP-1 enable scale 1.2 mode 2256x1504 position 0,0
+}
+
+profile 4kmonitor {
+    output eDP-1 enable scale 1.2 mode 2256x1504 position 0,547
+    output "Samsung Electric Company U28E590 HTPK810994" enable scale 1.2 mode 3840x2160@30Hz position 1881,0
+}

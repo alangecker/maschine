@@ -1,0 +1,107 @@
+
+
+- name: disable autotiling & flashfocus
+  community.general.pacman:
+    name:
+      - autotiling-rs
+      - flashfocus
+    state: absent
+
+- name: install dependent packages
+  community.general.pacman:
+    name:
+      - kanshi
+      - pavucontrol
+      - merkuro
+      - gtklock
+      # - python-dbus # for valent script
+    state: present
+
+
+- name: Install dependent AUR packages
+  kewlfft.aur.aur:
+    name: valent-git
+  become: yes
+  become_user: aur_builder
+
+- name: Copy sway config.d files
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/home/{{ system_user.name }}/.config/sway/config.d/{{ item | basename }}"
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+  with_fileglob: "../templates/config.d/*.conf"
+
+- name: Copy sway definitions.d files
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/home/{{ system_user.name }}/.config/sway/definitions.d/{{ item | basename }}"
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+  with_fileglob: "../templates/definitions.d/*.conf"
+
+- name: Copy waybar config
+  ansible.builtin.template:
+    src: waybar.jsonc
+    dest: /home/{{ system_user.name }}/.config/waybar/config.jsonc
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+
+- name: Copy kanshi config
+  ansible.builtin.template:
+    src: kanshi
+    dest: /home/{{ system_user.name }}/.config/sway/kanshi
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+
+- name: Copy foot.ini
+  ansible.builtin.template:
+    src: foot.ini
+    dest: /home/{{ system_user.name }}/.config/foot/foot.ini
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+
+- name: Check if swaycons is installed
+  stat:
+    path: /usr/local/bin/swaycons
+  register: swaycons_installed
+
+- name: install swaycons
+  when: not swaycons_installed.stat.exists
+  block:
+    - ansible.builtin.git:
+        repo: https://github.com/alangecker/swaycons.git
+        dest: /tmp/swaycons
+    - name: build and install swaycons
+      shell: 'cd /tmp/swaycons && cargo build --release && cp /tmp/swaycons/target/release/swaycons /usr/local/bin/swaycons'
+
+- name: swaycons config folder
+  ansible.builtin.file:
+    path: /home/{{ system_user.name }}/.config/swaycons/
+    state: directory
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+
+- name: Copy swaycons config
+  ansible.builtin.template:
+    src: swaycons.toml
+    dest: /home/{{ system_user.name }}/.config/swaycons/config.toml
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+
+- name: swaycons config folder
+  ansible.builtin.file:
+    path: /home/{{ system_user.name }}/.config/swaycons/
+    state: directory
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+
+- name: Copy sworkstytle config
+  ansible.builtin.template:
+    src: sworkstyle.toml
+    dest: /home/{{ system_user.name }}/.config/sworkstyle/config.toml
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+
+
+

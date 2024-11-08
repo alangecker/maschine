@@ -1,0 +1,53 @@
+[global]
+color = "#FFFFFF"
+focused_color = "#FFFFFF"
+icon = "󰖯"
+size = "14pt"
+separator = " "
+
+[app_id]
+# "dev.alextren.Spot" = { icon = "󰓇", color = "#1ed760" }
+# "org.daa.NeovimGtk" = { icon = "", color = "#8fff6d" }
+# "org.gnome.Calculator" = { icon = "󰃬" }
+# "org.gnome.clocks" = { icon = "󱑈" }
+# "org.gnome.Nautilus" = { icon = "󰉖", color = "#6291d6" }
+"org.keepassxc.KeePassXC" = { icon = "󰷖", color = "yellow" }
+# "org.kde.korganizer" = { icon = "󰃭", color = "#ce7010"}
+"org.telegram.desktop" = { icon = "", color = "#0088cc", size = "12pt" }
+nemo = { icon = "󰉖", color = "#c3762e" }
+# 1Password = { icon = "󰍁", color = "#0572ec" }
+# Alacritty = { icon = "" }
+# Deezer = { icon = "󰋋", color = "#ef5466" }
+# Insomnia = { icon = "", color = "#7100df" }
+# "im.riot.Riot" = { icon = "󰭹", color = "#3777f0" }
+# Slack = { icon = "󰒱", color = "#2eb67d" }
+# Spotify = { icon = "󰓇", color = "#1ed760" }
+# beekeeper-studio = { icon = "󰆼", color = "#fad83b" }
+chromium = { icon = "", color = "#a1c2fa", size = "13pt" }
+Chromium = { icon = "", color = "#a1c2fa", size = "13pt" }
+# discord = { icon = "󰙯", color = "#404eed" }
+"im.riot.Riot" = { icon = "󰭹", color = "#0dbd8b"}
+"org.signal.Signal" = { icon = "󰭹", color = "#3a76ef"}
+"org.mozilla.firefox" = { icon = "", color = "#ff8817", size = "12pt" }
+"org.mozilla.Thunderbird" = { icon = "", color = "#0075dd", size = "12pt"}
+# foot = { icon = "" }
+# geary = { icon = "", color = "#f6d32d" }
+"org.kde.merkuro.calendar" = { icon = "", color = "#3584e4" }
+# gnumeric = { icon = "󰈛", color = "#34a853" }
+# google-chrome = { icon = "", color = "#4285f4" }
+# neovide = { icon = "", color = "#8fff6d" }
+# nvim-qt = { icon = "", color = "#8fff6d" }
+# shotwell = { icon = "", color = "#4f7aaf" }
+"Tor Browser" = { icon = "", color = "#cc63ff", size = "12pt" }
+# zoom = { icon = "󰕧", color = "#2d8cff" }
+libreoffice-writer = { icon = "", color = "#00A500", size = "12pt" }
+libreoffice-calc = { icon = "󰱿", color = "#00A500" }
+# VSCodium = { icon ="", color = "#3678c9" }
+# codium-url-handler =  { icon ="", color = "#3678c9" }
+vlc = { icon = "󰕼", color = "#ce7010"}
+footclient = { icon = "", color = "#ffffff" }
+kicad = { icon = "", color = "#2f4aac", size = "12pt" }
+
+[title]
+"Schematic Editor" = { icon = "", color = "#efede9", size = "12pt" }
+"PCB Editor" = { icon = "", color = "#196819", size = "12pt" }
