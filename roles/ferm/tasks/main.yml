@@ -45,12 +45,9 @@
         (item.delete is defined and item.delete)
 
 - name: ensure iptables INPUT rules are added
-  ansible.builtin.template: src=etc/ferm/filter-input.d/{{ item.type }}.conf.j2
-            {% if item.filename is defined and item.filename %}
-            dest=/etc/ferm/filter-input.d/{{ item.weight | default('50') }}_{{ item.filename }}.conf
-            {% else %}
-            dest=/etc/ferm/filter-input.d/{{ item.weight | default('50') }}_{{ item.type }}_{{ item.dport[0] }}.conf
-            {% endif %}
+  ansible.builtin.template:
+    src: etc/ferm/filter-input.d/{{ item.type }}.conf.j2
+    dest: "{% if item.filename is defined and item.filename %}/etc/ferm/filter-input.d/{{ item.weight | default('50') }}_{{ item.filename }}.conf{% else %}dest=/etc/ferm/filter-input.d/{{ item.weight | default('50') }}_{{ item.type }}_{{ item.dport[0] }}.conf{% endif %}"
   with_flattened:
     - "{{ ferm_input_list }}"
     - "{{ ferm_input_group_list }}"
