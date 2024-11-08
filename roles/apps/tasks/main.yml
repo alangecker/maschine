@@ -1,3 +1,4 @@
 ---
 - import_tasks: flatpak.yml
 - import_tasks: apps.yml
+- import_tasks: fixes.yml

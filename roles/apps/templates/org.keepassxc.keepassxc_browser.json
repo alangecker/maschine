@@ -1,0 +1,10 @@
+{
+  "allowed_extensions": [
+      "keepassxc-browser@keepassxc.org"
+  ],
+  "description": "KeePassXC integration with native messaging support, workaround for flatpaked Firefox, see https://is.gd/flatpakFirefoxKPXC",
+  "name": "org.keepassxc.keepassxc_browser",
+  "path": "/home/{{ system_user.name }}/.var/app/org.mozilla.firefox/.mozilla/native-messaging-hosts/keepassxc-proxy",
+  "type": "stdio"
+}
+

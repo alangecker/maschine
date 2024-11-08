@@ -1,0 +1,50 @@
+
+- when: '"org.mozilla.firefox" in apps_flatpak'
+  name: 'fix firefox access to keepassxc'
+  vars:
+    keepass_proxy_bin: /home/{{ system_user.name }}/.var/app/org.mozilla.firefox/.mozilla/native-messaging-hosts/keepassxc-proxy
+  block:
+    - ansible.builtin.file:
+        dest: /home/{{ system_user.name }}/.var/app/org.mozilla.firefox/.mozilla/native-messaging-hosts
+        owner: "{{ system_user.name }}"
+        group: "{{ system_user.name }}"
+        mode: u=rwX,g=rX,o=rX
+        recurse: yes
+
+    - ansible.builtin.template:
+        src: "org.keepassxc.keepassxc_browser.json"
+        dest: /home/{{ system_user.name }}/.var/app/org.mozilla.firefox/.mozilla/native-messaging-hosts/org.keepassxc.keepassxc_browser.json
+        owner: "{{ system_user.name }}"
+        group: "{{ system_user.name }}"
+
+
+    - name: Check if keepassxc proxy is installed
+      stat:
+        path: "{{ keepass_proxy_bin }}"
+      register: proxy_installed
+
+    - name: install keepassxc proxy
+      when: not proxy_installed.stat.exists
+      block:
+        - ansible.builtin.git:
+            repo: https://github.com/varjolintu/keepassxc-proxy-rust.git
+            version: 0b812153a8e8d7bc9783fb53b4f388eba4bf0e9d
+            dest: /tmp/keepassxc-proxy-rust
+          become_user: "{{ system_user.name }}"
+          become: true
+
+        - name: build keepassxc-proxy
+          shell: "cd /tmp/keepassxc-proxy-rust && cargo build --release"
+          args:
+            creates: /tmp/keepassxc-proxy-rust/target/release/keepassxc-proxy
+          become_user: "{{ system_user.name }}"
+          become: true
+
+        - name: copy keepassxc-proxy into flatpak
+          shell: "cp /tmp/keepassxc-proxy-rust/target/release/keepassxc-proxy {{ keepass_proxy_bin }}"
+          args:
+            creates: "{{ keepass_proxy_bin }}"
+
+
+    - name: allow firefox to access to kpxc_server
+      shell: flatpak override --filesystem=xdg-run/app/org.keepassxc.KeePassXC/org.keepassxc.KeePassXC.BrowserServer org.mozilla.firefox
