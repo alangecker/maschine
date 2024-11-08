@@ -2,7 +2,130 @@
 - name: Provision typewriter
   hosts: remote
   become: true
+  vars_prompt:
+    - name: user_password
+      prompt: "Enter desired user password"
+  vars:
+    system_user:
+      name: "{{ user_name }}"
+      id: 1000
+      gid: 1001
+    system_base_packages:
+        - ansible
+        - base-devel
+        - bind
+        - binwalk
+        - bolt
+        - borgmatic
+        - exfatprogs
+        - ffmpeg
+        - firejail
+        - fwupd
+        - gocryptfs # as a plasma vault backend with good performance
+        - htop
+        - inetutils
+        - iperf3
+        - ncdu
+        - nmap
+        - pipewire-pulse
+        - wireplumber # pipewire session manager
+        - easyeffects # Audio Effects for Pipewire applications
+        - power-profiles-daemon # mange power profiles via dbus
+        - powertop
+        # - python-keyring
+        # - python-passlib
+        - python-pip
+        # - python-secretstorage
+        # - python-setuptools
+        - smartmontools
+        - openssh
+        - usbutils
+        # - tldr
+        - tmux
+        - tree
+        - zip
+        - unzip
+        - vim
+        - mesa
+        - wine
+        - winetricks
+        - lib32-mesa
+        - libva-mesa-driver
+        - lib32-libva-mesa-driver
+        - mesa-vdpau
+        - lib32-mesa-vdpau
+        - vulkan-mesa-layers
+        - wget
+        - zsh
+        - zsh-autosuggestions
+        - zsh-syntax-highlighting
+        - zsh-completions
+        - xdg-desktop-portal
+        - noto-fonts-emoji
+        - wireguard-tools
+        - yt-dlp
+    system_development_packages:
+      - git
+      - deno
+      - docker
+      - docker-compose
+      - firefox-developer-edition
+      - hackrf
+      - minicom
+      - podman
+      - podman-compose
+      - rust
+      - yarn
+      - jq
+      - yq
+    system_applications:
+      - kicad
+      - kicad-library
+      - kicad-library-3d
+      - linssid
+      - mixxx
+      - pavucontrol
+      - qpwgraph
+      - sqlitebrowser
+      - wireshark-qt
+      - yubikey-manager-qt
+      - merkuro # calendar
+      - nextcloud-client
+      - nemo # file manager
+      - nemo-python # for nextcloud integration
+      - gnome-disk-utility
+      - chromium
+      - keepassxc
+
+    apps_flatpak:
+      - org.mozilla.firefox
+      - org.mozilla.Thunderbird
+      - org.gimp.GIMP
+      - org.inkscape.Inkscape
+      - org.audacityteam.Audacity
+      - org.libreoffice.LibreOffice
+      - com.mattermost.Desktop
+      - org.telegram.desktop
+      - com.github.jeromerobert.pdfarranger
+      - eu.scarpetta.PDFMixTool
+      - com.brave.Browser
+      - im.riot.Riot
+      - org.signal.Signal
+      - org.videolan.VLC
+      - org.kde.kdenlive
+      - org.torproject.torbrowser-launcher
+
+    system_aur_packages:
+      - yay
+      - chirp-next
+      - vscodium-bin
   roles:
+    - role: system
+      tags:
+        - system
+        - setup
+      bluetooth_enabled: false
+
     - role: secureboot
       tags:
         - setup
