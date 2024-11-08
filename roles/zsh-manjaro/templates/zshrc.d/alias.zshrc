@@ -16,3 +16,5 @@ dcl() {
 # ssh without host key checking
 alias sshnk="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 alias scpnk="scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+
+alias code=vscodium

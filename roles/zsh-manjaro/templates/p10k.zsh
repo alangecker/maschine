@@ -75,7 +75,11 @@ typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
   # example               # example user-defined segment (see prompt_example function below)
 )
 
+# different context prompt color when in sandbox
 if [[ "$container" == "firejail" ]]; then
   typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_FOREGROUND=40
   typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=40
 fi
+
+# always show context in prompt
+typeset -g POWERLEVEL9K_CONTEXT_DEFAULT_CONTENT_EXPANSION='%n@%m'
