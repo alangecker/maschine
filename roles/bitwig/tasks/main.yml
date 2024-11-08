@@ -1,0 +1,51 @@
+- name: Install bitwig studio
+  kewlfft.aur.aur:
+    name: bitwig-studio
+  become: yes
+  become_user: aur_builder
+
+- name: Install realtime-privileges and yabridge
+  community.general.pacman:
+    name:
+      - realtime-privileges
+      - yabridge
+      - yabridgectl
+      - wine
+    state: present
+
+- name: exclude bitwig from regular updates
+  ansible.builtin.lineinfile:
+    path: /etc/pacman.conf
+    line: "IgnorePkg=bitwig-studio"
+    insertafter: "#IgnorePkg"
+
+- name: add user to realtime group
+  ansible.builtin.user:
+    name: "{{ system_user.name }}"
+    groups:
+      - realtime
+    append: true
+
+- name: ensure DAW jail directory exist
+  ansible.builtin.file:
+    path: /home/{{ system_user.name }}/jails/daw
+    state: directory
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+
+- name: Copy firejail config
+  ansible.builtin.template:
+    src: firejail.profile
+    dest: "/home/{{ system_user.name }}/.config/firejail/daw.profile"
+    owner: "{{ system_user.name }}"
+    group: "{{ system_user.name }}"
+
+- name: ensure /usr/local/share/applications exists
+  ansible.builtin.file:
+    path: /usr/local/share/applications
+    state: directory
+- name: create bitwig desktop file (override)
+  ansible.builtin.template:
+    src: com.bitwig.BitwigStudio.desktop
+    dest: /usr/local/share/applications/com.bitwig.BitwigStudio.desktop
+

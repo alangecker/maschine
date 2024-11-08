@@ -204,6 +204,11 @@
       tags:
         - apps
         - applications
+
+    - role: bitwig
+      tags:
+        - bitwig
+
     - role: borgbase.ansible_role_borgbackup
       borgmatic_timer: "" # disable cronjob / only manual backups
       tags:
