@@ -200,8 +200,14 @@
       tags:
         - jails
 
+    - role: apps
+      tags:
+        - apps
+        - applications
     - role: borgbase.ansible_role_borgbackup
       borgmatic_timer: "" # disable cronjob / only manual backups
       tags:
         - backup
       when: backup_enabled
+
+- import_playbook: firewall.yml
