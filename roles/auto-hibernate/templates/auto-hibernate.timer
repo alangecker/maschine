@@ -1,0 +1,11 @@
+[Unit]
+Description=auto hibernate at a specific time
+
+[Timer]
+OnCalendar=*-*-* {{ auto_hibernate_time }}
+Unit=systemd-hibernate.service
+WakeSystem=true
+Persistent=false
+
+[Install]
+WantedBy=timers.target

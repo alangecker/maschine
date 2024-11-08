@@ -10,6 +10,7 @@
       name: "{{ user_name }}"
       id: 1000
       gid: 1001
+    auto_hibernate_time: "06:00:00"
     system_base_packages:
         - ansible
         - base-devel
@@ -125,6 +126,10 @@
         - system
         - setup
       bluetooth_enabled: false
+
+    - role: auto-hibernate
+      tags:
+        - system
 
     - role: secureboot
       tags:

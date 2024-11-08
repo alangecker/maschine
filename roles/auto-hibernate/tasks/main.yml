@@ -1,0 +1,10 @@
+- name: auto-hibernate.timer
+  ansible.builtin.template:
+    src: auto-hibernate.timer
+    dest: "/etc/systemd/system/auto-hibernate.timer"
+
+- name: auto-hibernate.timer
+  ansible.builtin.service:
+    name: auto-hibernate.timer
+    state: started
+    enabled: yes
